@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PortaCraft Components</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    section {
+      margin: 2rem 0;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color: #3A86FF;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      background-color: #F5F5F5;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      font-family: 'Inter', sans-serif;
+      margin: 1rem 0;
+    }
+
+    .card {
+      border: 1px solid #E0E0E0;
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1rem 0;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: 0.3s ease;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: #3A86FF;
+      color: white;
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Navbar -->
+    <section>
+      <div class="navbar">
+        <div><strong>PortaCraft</strong></div>
+        <div>
+          <a href="#">Home</a>
+          <a href="#">Features</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>Build Your Portfolio with AI</h1>
+      <p>Let PortaCraft help you launch a professional portfolio site in minutes.</p>
+      <button class="btn primary">Get Started</button>
+    </section>
+
+    <!-- Feature Card -->
+    <section>
+      <h2>Feature Card</h2>
+      <div class="card">
+        <h3>AI-Assisted Portfolio Generator</h3>
+        <p>Generate stunning portfolios with zero coding. Customize projects, add testimonials, and publish fast.</p>
+      </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section>
+      <h2>Testimonial</h2>
+      <div class="card">
+        <p>"PortaCraft helped me create a beautiful portfolio that landed me a job interview in just 2 days!"</p>
+        <p><strong>— Priya, UX Designer</strong></p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section class="footer">
+      <p>© 2025 PortaCraft. All rights reserved.</p>
+    </section>
+  </div>
+</body>
+</html>
