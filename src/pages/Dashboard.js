@@ -1,30 +1,49 @@
+import { useState, useEffect } from 'react';
+
 export default function Dashboard() {
-  // Mock data for demonstration. You can later connect to backend or props.
-  const user = {
-    name: "Bharath",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    plan: "Pro",
-    joinDate: "March 2024"
-  };
+  // For now, we'll use mock data but structure it like real data
+  // Later you can replace this with Firebase calls
+  const [userPortfolio, setUserPortfolio] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Simulate loading user data
+  useEffect(() => {
+    // Simulate API call delay
+    setTimeout(() => {
+      setUserPortfolio({
+        name: "Bharath",
+        email: "bharath@example.com",
+        profileImage: "https://randomuser.me/api/portraits/men/32.jpg",
+        plan: "Pro",
+        joinDate: "March 2024",
+        totalViews: 128,
+        monthlyViews: 45,
+        portfolioCount: 3,
+        themesUsed: 2,
+        username: "bharath"
+      });
+      setLoading(false);
+    }, 1000);
+  }, []);
 
   const stats = [
     { 
       label: "Portfolios Created", 
-      value: 3, 
+      value: userPortfolio?.portfolioCount || 3, 
       icon: "🎨",
       change: "+1 this month",
       color: "from-purple-500 to-pink-500"
     },
     { 
       label: "Themes Used", 
-      value: 2, 
+      value: userPortfolio?.themesUsed || 2, 
       icon: "🖼️",
       change: "Creative & Minimal",
       color: "from-blue-500 to-indigo-500"
     },
     { 
       label: "Visitors This Month", 
-      value: 128, 
+      value: userPortfolio?.monthlyViews || 128, 
       icon: "👥",
       change: "+23% from last month",
       color: "from-green-500 to-teal-500"
@@ -96,6 +115,17 @@ export default function Dashboard() {
     }
   ];
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8">
       <div className="max-w-7xl mx-auto px-4">
@@ -106,7 +136,7 @@ export default function Dashboard() {
             <div className="flex items-center gap-4">
               <div className="relative">
                 <img 
-                  src={user.avatar} 
+                  src={userPortfolio?.profileImage || "https://randomuser.me/api/portraits/men/32.jpg"} 
                   alt="Profile" 
                   className="w-20 h-20 rounded-full object-cover border-4 border-gradient-to-r from-purple-400 to-pink-400 shadow-lg" 
                 />
@@ -114,14 +144,16 @@ export default function Dashboard() {
               </div>
               <div>
                 <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  Welcome back, {user.name}!
+                  Welcome back, {userPortfolio?.name || 'User'}!
                 </h1>
                 <p className="text-gray-600 text-lg">Here's a snapshot of your PortaCraft activity.</p>
                 <div className="flex items-center gap-4 mt-2">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-                    {user.plan} Plan
+                    {userPortfolio?.plan || 'Free'} Plan
                   </span>
-                  <span className="text-gray-500 text-sm">Member since {user.joinDate}</span>
+                  <span className="text-gray-500 text-sm">
+                    Member since {userPortfolio?.joinDate || 'Recently'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -129,7 +161,7 @@ export default function Dashboard() {
             <div className="md:ml-auto">
               <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl shadow-lg">
                 <div className="text-sm opacity-90">Total Portfolio Views</div>
-                <div className="text-2xl font-bold">128</div>
+                <div className="text-2xl font-bold">{userPortfolio?.totalViews || 0}</div>
               </div>
             </div>
           </div>
@@ -160,10 +192,10 @@ export default function Dashboard() {
             <div className="bg-white rounded-xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">Your Portfolios</h2>
-                <a href="/create-portfolio" className="text-purple-600 hover:text-purple-700 font-medium text-sm flex items-center">
-                  Create New
+                <a href="/portfolio-editor" className="text-purple-600 hover:text-purple-700 font-medium text-sm flex items-center">
+                  Edit Portfolio
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                 </a>
               </div>
@@ -191,6 +223,22 @@ export default function Dashboard() {
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span>{portfolio.views} views</span>
                         <span>{portfolio.lastUpdated}</span>
+                      </div>
+                      <div className="mt-3 flex gap-2">
+                        <a 
+                          href={`/portfolio/${userPortfolio?.username || 'bharath'}`}
+                          className="text-blue-600 hover:text-blue-700 text-xs font-medium"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View Public
+                        </a>
+                        <a 
+                          href="/portfolio-editor"
+                          className="text-purple-600 hover:text-purple-700 text-xs font-medium"
+                        >
+                          Edit
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -229,13 +277,13 @@ export default function Dashboard() {
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h3 className="text-xl font-bold mb-4 text-gray-800">Quick Actions</h3>
               <div className="space-y-3">
-                <a href="/edit-profile" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-lg font-medium shadow hover:shadow-lg transition-all duration-300 flex items-center">
+                <a href="/portfolio-editor" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-3 rounded-lg font-medium shadow hover:shadow-lg transition-all duration-300 flex items-center">
                   <span className="mr-2">👤</span>
                   Edit Profile
                 </a>
-                <a href="/create-portfolio" className="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-3 rounded-lg font-medium shadow hover:shadow-lg transition-all duration-300 flex items-center">
+                <a href="/portfolio-editor" className="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-3 rounded-lg font-medium shadow hover:shadow-lg transition-all duration-300 flex items-center">
                   <span className="mr-2">➕</span>
-                  Create New Portfolio
+                  Update Portfolio
                 </a>
                 <a href="/themes" className="w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white px-4 py-3 rounded-lg font-medium shadow hover:shadow-lg transition-all duration-300 flex items-center">
                   <span className="mr-2">🎨</span>
@@ -254,7 +302,7 @@ export default function Dashboard() {
               <p className="text-purple-100 mb-4">
                 Add testimonials to your portfolio to build trust with potential clients. Portfolios with testimonials get 40% more inquiries!
               </p>
-              <a href="/testimonials" className="inline-flex items-center bg-white text-purple-600 px-4 py-2 rounded-lg font-medium hover:bg-purple-50 transition-colors">
+              <a href="/portfolio-editor" className="inline-flex items-center bg-white text-purple-600 px-4 py-2 rounded-lg font-medium hover:bg-purple-50 transition-colors">
                 Add Testimonials
                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
